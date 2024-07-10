@@ -58,12 +58,12 @@ declare class DetachExcessStyles {
     constructor(options: DetachExcessStylesOptions);
     apply(compiler: any): void;
     /**
-     * Get all .wxss files in the specified directory.
+     * Get all .xxss files in the specified directory.
      * @param {string} dir - The directory to search.
      * @param {boolean} [further=false] - Whether to continue searching deeper directories.
      * @returns {string[]} - An array of file paths.
      */
-    private getAllWxssFiles;
+    private getAllXxssFiles;
     /**
      * Remove global styles from the content.
      * @param {string} content - The content to process.

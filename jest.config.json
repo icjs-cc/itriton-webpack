@@ -1,0 +1,5 @@
+{
+  "preset": "ts-jest",
+  "testEnvironmentOptions": { "url": "https://itriton.com?plugin=webpack" },
+  "testEnvironment": "jsdom"
+}

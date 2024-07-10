@@ -22,7 +22,6 @@ export interface DetachExcessStylesOptions {
   debug?: boolean;
 }
 
-
 /**
  * DetachExcessStyles 压缩 UNIAPP 样式的 Webpack 插件
  * @category Webpack

@@ -45,19 +45,23 @@ export class DetachExcessStyles {
       const env = process.env.NODE_ENV === 'development' ? 'dev' : 'build';
       const mainStylePath = path.join(__dirname, `unpackage/dist/${env}/mp-weixin/common/main.wxss`);
       const baseDir = path.join(__dirname, `unpackage/dist/${env}/mp-weixin`);
+      let plugins = [];
+      if (process.env.UNI_PLATFORM === 'mp-weixin') {
+        plugins.push(
+          new DetachExcessStyles({
+            mainStylePath,
+            baseDir,
+            startWithDir: ['pages'], // 支持多个起始目录
+            endWithFile: '.wxss', // 可选，默认为 '.wxss'
+            fullMatch: false, // 可选，默认为 false，设置为 true 时全匹配起始目录文件夹名称
+            debug: true // 可选，默认为 false
+          })
+        )
+      }
 
       module.exports = {
         configureWebpack: {
-          plugins: [
-            new DetachExcessStyles({
-              mainStylePath,
-              baseDir,
-              startWithDir: ['pages', 'pagesMine'], // 支持多个起始目录
-              endWithFile: '.wxss', // 可选，默认为 '.wxss'
-              fullMatch: true, // 可选，默认为 false，设置为 true 时全匹配起始目录文件夹名称
-              debug: true // 可选，默认为 false
-            }),
-          ]
+          plugins
         }
       }
    * ```

@@ -42,7 +42,26 @@ export class DetachExcessStyles {
    * @param {DetachExcessStylesOptions} options - 插件 options.
    * @example
    * ``` typescript
-   *  isWechat()
+      const path = require('path');
+      const { DetachExcessStyles } = require('@itriton/webpack');
+      const env = process.env.NODE_ENV === 'development' ? 'dev' : 'build';
+      const mainStylePath = path.join(__dirname, `unpackage/dist/${env}/mp-weixin/common/main.wxss`);
+      const baseDir = path.join(__dirname, `unpackage/dist/${env}/mp-weixin`);
+
+      module.exports = {
+        configureWebpack: {
+          plugins: [
+            new DetachExcessStyles({
+              mainStylePath,
+              baseDir,
+              startWithDir: ['pages', 'pagesMine'], // 支持多个起始目录
+              endWithFile: '.wxss', // 可选，默认为 '.wxss'
+              fullMatch: true, // 可选，默认为 false，设置为 true 时全匹配起始目录文件夹名称
+              debug: true // 可选，默认为 false
+            }),
+          ]
+        }
+      }
    * ```
    */
   constructor(options: DetachExcessStylesOptions) {

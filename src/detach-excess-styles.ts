@@ -80,11 +80,11 @@ export class DetachExcessStyles {
         let mainStyleContent = fs.readFileSync(this.mainStylePath, 'utf-8');
         mainStyleContent = this.formatCss(mainStyleContent);
 
-        // Get all matching .wxss files
-        const xxssFiles = this.getAllWxssFiles(this.baseDir);
+        // Get all matching .xxss files
+        const xxssFiles = this.getAllXxssFiles(this.baseDir);
         if (this.debug) console.log(xxssFiles);
 
-        // Process each .wxss file
+        // Process each .xxss file
         for (const file of xxssFiles) {
           let content = fs.readFileSync(file, 'utf-8');
           content = this.formatCss(content);
@@ -104,12 +104,12 @@ export class DetachExcessStyles {
   }
 
   /**
-   * Get all .wxss files in the specified directory.
+   * Get all .xxss files in the specified directory.
    * @param {string} dir - The directory to search.
    * @param {boolean} [further=false] - Whether to continue searching deeper directories.
    * @returns {string[]} - An array of file paths.
    */
-  private getAllWxssFiles(dir: string, further = false): string[] {
+  private getAllXxssFiles(dir: string, further = false): string[] {
     let results: string[] = [];
     const files = fs.readdirSync(dir);
     files.forEach(file => {
@@ -119,7 +119,7 @@ export class DetachExcessStyles {
       if (stat.isDirectory()) {
         const shouldRecurse = this.startWithDir.some(startDir => this.fullMatch ? file === startDir : file.startsWith(startDir));
         if (shouldRecurse || further) {
-          results = results.concat(this.getAllWxssFiles(filePath, true));
+          results = results.concat(this.getAllXxssFiles(filePath, true));
         }
       } else if (stat.isFile() && file.endsWith(this.endWithFile)) {
         results.push(filePath);

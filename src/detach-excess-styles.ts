@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 const cssbeautify = require('cssbeautify');
-const postcss = require('postcss');
-const cssnano = require('cssnano');
 
 /**
  * 插件选项
@@ -89,12 +87,12 @@ export class DetachExcessStyles {
           let content = fs.readFileSync(file, 'utf-8');
           content = this.formatCss(content);
           content = this.removeGlobalStyles(content, mainStyleContent);
-          content = await this.compressCss(content);
+          content = this.compressCss(content);
           fs.writeFileSync(file, content);
         }
 
         // Clear global styles in main style file
-        mainStyleContent = await this.compressCss(mainStyleContent);
+        mainStyleContent = this.compressCss(mainStyleContent);
         fs.writeFileSync(this.mainStylePath, mainStyleContent);
         console.log('[DetachExcessStyles] - global style replacement completed');
       } else {
@@ -165,9 +163,16 @@ export class DetachExcessStyles {
    * @param {string} css - The CSS content to compress.
    * @returns {Promise<string>} - The compressed CSS content.
    */
-  private async compressCss(css: string): Promise<string> {
-    const result = await postcss([cssnano]).process(css, { from: undefined });
-    return result.css;
+  private compressCss(css: string): string {
+    // 移除注释
+    css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+    // 移除换行符和多余的空格
+    css = css.replace(/\s*([\{\}\:\;\,])\s*/g, '$1');
+    // 移除以空格开头和结尾的空格
+    css = css.replace(/^\s+|\s+$/g, '');
+    // 将多个空格替换为单个空格
+    css = css.replace(/\s+/g, ' ');
+    return css;
   }
 
   /**

@@ -23,3 +23,8 @@ import { WebpackDetachExcessStyles } from '@itriton/webpack'
 ```
 const {  WebpackDetachExcessStyles } = require('@itriton/webpack')
 ```
+
+## 插件（Plugins）
+
+#### DetachExcessStyles
+压缩 UNIAPP 重复样式的 Webpack 插件

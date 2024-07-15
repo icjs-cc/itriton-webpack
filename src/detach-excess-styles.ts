@@ -76,7 +76,7 @@ export class DetachExcessStyles {
 
   apply(compiler: any) {
     compiler.hooks.done.tapPromise('DetachExcessStyles', async (stats: any) => {
-      console.log('[DetachExcessStyles] - global style start processing');
+      console.log('[DetachExcessStyles] - DetachExcessStyles start processing');
       if (fs.existsSync(this.mainStylePath)) {
         let mainStyleContent = fs.readFileSync(this.mainStylePath, 'utf-8');
         mainStyleContent = this.formatCss(mainStyleContent);
@@ -90,14 +90,12 @@ export class DetachExcessStyles {
           let content = fs.readFileSync(file, 'utf-8');
           content = this.formatCss(content);
           content = this.removeGlobalStyles(content, mainStyleContent);
-          content = this.compressCss(content);
           fs.writeFileSync(file, content);
         }
 
         // Clear global styles in main style file
-        mainStyleContent = this.compressCss(mainStyleContent);
         fs.writeFileSync(this.mainStylePath, mainStyleContent);
-        console.log('[DetachExcessStyles] - global style replacement completed');
+        console.log('[DetachExcessStyles] - DetachExcessStyles replacement completed');
       } else {
         console.log('[DetachExcessStyles] - main style not found');
       }
@@ -158,23 +156,6 @@ export class DetachExcessStyles {
     // Add newline after each right brace
     css = css.replace(/\}/g, '}\n');
 
-    return css;
-  }
-
-  /**
-   * Compress CSS content.
-   * @param {string} css - The CSS content to compress.
-   * @returns {Promise<string>} - The compressed CSS content.
-   */
-  private compressCss(css: string): string {
-    // 移除注释
-    css = css.replace(/\/\*[\s\S]*?\*\//g, '');
-    // 移除换行符和多余的空格
-    css = css.replace(/\s*([\{\}\:\;\,])\s*/g, '$1');
-    // 移除以空格开头和结尾的空格
-    css = css.replace(/^\s+|\s+$/g, '');
-    // 将多个空格替换为单个空格
-    css = css.replace(/\s+/g, ' ');
     return css;
   }
 

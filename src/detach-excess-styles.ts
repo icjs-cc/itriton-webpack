@@ -146,11 +146,11 @@ export class DetachExcessStyles {
    * @returns {string} - The formatted CSS content.
    */
   private formatCss(css: string): string {
+    css = css.replace(/\/\*[\s\S]*?\*\//g, ''); 
     css = cssbeautify(css, {
       indent: '  ',
       autosemicolon: true
     });
-
     // Compress CSS rules into one line and add space after each left brace
     css = css.replace(/\{(\s*)/g, '{ ').replace(/\s+/g, ' ').trim();
     // Add newline after each right brace

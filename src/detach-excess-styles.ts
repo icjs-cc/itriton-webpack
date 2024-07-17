@@ -76,7 +76,6 @@ export class DetachExcessStyles {
 
   apply(compiler: any) {
     compiler.hooks.done.tapPromise('DetachExcessStyles', async (stats: any) => {
-      console.log('[DetachExcessStyles] - DetachExcessStyles start processing');
       if (fs.existsSync(this.mainStylePath)) {
         let mainStyleContent = fs.readFileSync(this.mainStylePath, 'utf-8');
         mainStyleContent = this.formatCss(mainStyleContent);
@@ -95,9 +94,6 @@ export class DetachExcessStyles {
 
         // Clear global styles in main style file
         fs.writeFileSync(this.mainStylePath, mainStyleContent);
-        console.log('[DetachExcessStyles] - DetachExcessStyles replacement completed');
-      } else {
-        console.log('[DetachExcessStyles] - main style not found');
       }
     });
   }

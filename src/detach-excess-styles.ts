@@ -130,10 +130,7 @@ export class DetachExcessStyles {
    * @returns {string} - The processed content.
    */
   private removeGlobalStyles(content: string, mainStyleContent: string): string {
-    const mainStyles = mainStyleContent.split('\n').map(line => line.trim()).filter(line => line);
-    const contentLines = content.split('\n');
-    const filteredLines = contentLines.filter(line => !mainStyles.includes(line.trim()));
-    return filteredLines.join('\n');
+    return content.replace(mainStyleContent, "");
   }
 
   /**
@@ -153,14 +150,5 @@ export class DetachExcessStyles {
     css = css.replace(/\}/g, '}\n');
 
     return css;
-  }
-
-  /**
-   * Escape special characters in a string for use in a regular expression.
-   * @param {string} string - The string to escape.
-   * @returns {string} - The escaped string.
-   */
-  private escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special characters
   }
 }

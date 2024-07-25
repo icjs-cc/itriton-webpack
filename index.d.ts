@@ -81,12 +81,6 @@ declare class DetachExcessStyles {
      * @returns {string} - The formatted CSS content.
      */
     private formatCss;
-    /**
-     * Escape special characters in a string for use in a regular expression.
-     * @param {string} string - The string to escape.
-     * @returns {string} - The escaped string.
-     */
-    private escapeRegExp;
 }
 
 export { DetachExcessStyles, DetachExcessStylesOptions };

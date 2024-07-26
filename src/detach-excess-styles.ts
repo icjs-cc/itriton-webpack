@@ -130,7 +130,46 @@ export class DetachExcessStyles {
    * @returns {string} - The processed content.
    */
   private removeGlobalStyles(content: string, mainStyleContent: string): string {
-    return content.replace(mainStyleContent, "");
+    // 将 mainStyleContent 按行拆分并去除前后的空白字符
+    const mainStyles = mainStyleContent.split("\n").map((line) => line.trim()).filter((line) => line);
+
+    // 创建一个 Set 来存储要删除的样式规则行
+    const mainStyleSet = new Set(mainStyles);
+
+    // 将 content 按行拆分
+    const contentLines = content.split("\n");
+
+    // 创建一个数组来存储最终的内容行
+    const resultLines = [];
+
+    // 标记当前是否在要删除的样式块内
+    let inRemoveBlock = false;
+
+    for (const line of contentLines) {
+      const trimmedLine = line.trim();
+
+      // 如果当前行在要删除的样式规则集合中，跳过此行
+      if (mainStyleSet.has(trimmedLine)) {
+        // 如果这是一个开始的新块，设置标记
+        if (trimmedLine.endsWith('{')) {
+          inRemoveBlock = true;
+        }
+        continue;
+      }
+
+      // 如果当前在删除块内，检查是否到达块的结束
+      if (inRemoveBlock) {
+        if (trimmedLine.endsWith('}')) {
+          inRemoveBlock = false;
+        }
+        continue;
+      }
+
+      // 不是要删除的行，添加到结果行中
+      resultLines.push(line);
+    }
+
+    return resultLines.join("\n");
   }
 
   /**
@@ -139,7 +178,7 @@ export class DetachExcessStyles {
    * @returns {string} - The formatted CSS content.
    */
   private formatCss(css: string): string {
-    css = css.replace(/\/\*[\s\S]*?\*\//g, ''); 
+    css = css.replace(/\/\*[\s\S]*?\*\//g, '');
     css = cssbeautify(css, {
       indent: '  ',
       autosemicolon: true
